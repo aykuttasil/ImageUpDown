@@ -1,15 +1,18 @@
 package com.aykuttasil.imageupload;
 
+import android.graphics.Bitmap;
+
 import com.aykuttasil.imageupload.rest.models.BaseRestResponse;
 import com.aykuttasil.imageupload.seed.IBaseSeed;
 
 import org.apache.commons.io.FileUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.exceptions.Exceptions;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -36,14 +39,43 @@ public class ImageUpload<T extends IBaseSeed, R extends BaseRestResponse> {
         return mSeed.upload(map);
     }
 
-    public rx.Observable<R> upload(File file, String fileName) throws IOException {
+    public rx.Observable<R> upload(File file, String fileName) {
 
-        byte[] byteContent = FileUtils.readFileToByteArray(file);
-        RequestBody imageBody = RequestBody.create(MediaType.parse("image/*"), byteContent);
+        try {
+            byte[] byteContent = FileUtils.readFileToByteArray(file);
+            RequestBody imageBody = RequestBody.create(MediaType.parse("image/*"), byteContent);
 
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("image\"; filename=\"" + fileName + ".jpg\"", imageBody);
+            Map<String, RequestBody> map = new HashMap<>();
+            map.put("image\"; filename=\"" + fileName + ".jpg\"", imageBody);
 
-        return mSeed.upload(map);
+            return mSeed.upload(map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw Exceptions.propagate(e);
+        }
     }
+
+    public rx.Observable<R> upload(Bitmap bitmap, String fileName) {
+
+        try {
+            Bitmap bmp = bitmap.copy(Bitmap.Config.ARGB_8888, false);
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteContent = stream.toByteArray();
+
+            RequestBody imageBody = RequestBody.create(MediaType.parse("image/*"), byteContent);
+
+            Map<String, RequestBody> map = new HashMap<>();
+            map.put("image\"; filename=\"" + fileName + ".jpg\"", imageBody);
+
+            return mSeed.upload(map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw Exceptions.propagate(e);
+        }
+    }
+
 }
