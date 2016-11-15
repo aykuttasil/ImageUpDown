@@ -25,6 +25,23 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/rxjava.properties'
+        exclude 'lib/armeabi-v7a/libiconv.so'
+        exclude 'lib/armeabi-v7a/libzbarjni.so'
+    }
 }
 
 dependencies {
@@ -38,8 +55,46 @@ dependencies {
 
     compile 'io.reactivex.rxjava2:rxjava:2.0.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.0'
+
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+
+    compile 'commons-io:commons-io:2.5'
 }
 
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'ImageUpDown'
+    orgName = 'aykuttasil'
 
+    publishedGroupId = 'com.aykuttasil'
+    libraryName = 'ImageUpload'
+    artifact = 'imageupload' // module ile aynı isimde olması gerekiyor
+
+    libraryDescription = 'Android Image Upload'
+
+    siteUrl = 'https://github.com/aykuttasil/ImageUpDown'
+    gitUrl = 'https://github.com/aykuttasil/ImageUpDown.git'
+
+    libraryVersion = rootProject.ext.libraryVersion
+
+    developerId = 'aykuttasil'
+    developerName = 'Aykut Asil'
+    developerEmail = 'aykuttasil@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+if (project.rootProject.file('local.properties').exists()) {
+    apply from: rootProject.file('gradle/install-v1.gradle')
+    apply from: rootProject.file('gradle/bintray-android-v1.gradle')
+}
+
+
+// ./gradlew clean install bintrayUpload
 
