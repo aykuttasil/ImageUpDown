@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import com.aykuttasil.imageupload.rest.models.BaseRestResponse;
 import com.aykuttasil.imageupload.seed.IBaseSeed;
+import com.aykuttasil.imageupload.seed.Imgur;
 
 import org.apache.commons.io.FileUtils;
 
@@ -25,10 +26,14 @@ public class ImageUpload<T extends IBaseSeed, R extends BaseRestResponse> {
     private T mSeed;
     private R mResp;
 
-
     private ImageUpload(T seed, R resp) {
         mSeed = seed;
         mResp = resp;
+    }
+
+    private ImageUpload(T seed) {
+        mSeed = seed;
+        //mResp = resp;
     }
 
     public static <T extends IBaseSeed, R extends BaseRestResponse> ImageUpload<T, R> create(T seed, R resp) {

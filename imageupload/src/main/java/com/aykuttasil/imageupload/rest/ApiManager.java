@@ -36,7 +36,7 @@ public class ApiManager {
 
     public rx.Observable<ImgurUploadResponse> ImgurImageUpload(Map<String, RequestBody> image) {
 
-        String imgurAuth = "Client-ID " + Imgur.IMGUR_API_CLIENT;
+        String imgurAuth = "Client-ID " + Imgur.IMGUR_API_CLIENT_KEY;
 
         return mRestClient.getmApiService()
                 .ImgurUpload(imgurAuth, image)

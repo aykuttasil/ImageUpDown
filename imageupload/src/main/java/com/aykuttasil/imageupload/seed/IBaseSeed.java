@@ -12,5 +12,6 @@ public abstract class IBaseSeed<T, R> {
 
     public abstract rx.Observable<R> upload(Map<String, RequestBody> map);
 
+    // public abstract R resp();
 
 }

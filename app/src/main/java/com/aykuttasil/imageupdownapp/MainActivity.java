@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
             Bitmap bitmap = BitmapFactory.decodeFile(filePath);
 
-            ImageUpload.create(new Imgur(this), Imgur.resp())
+            ImageUpload.create(Imgur.getInstance(this, "5b37683c8864f6a"), Imgur.resp())
                     .upload(bitmap, "dosyaadi")
                     .subscribe(success -> {
                         Log.i(TAG, "success");

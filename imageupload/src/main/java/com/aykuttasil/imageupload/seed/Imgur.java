@@ -18,27 +18,33 @@ public class Imgur extends IBaseSeed<Imgur, ImgurUploadResponse> {
 
     private static String TAG = Imgur.class.getSimpleName();
 
-    public static String IMGUR_API_CLIENT = "5b37683c8864f6a";
-    public static String IMGUR_API_SECRET = "";
+    public static String IMGUR_API_CLIENT_KEY;
+    public static String IMGUR_API_SECRET;
 
     private Context mContext;
 
-
-    public Imgur(Context context) {
-        Log.i(TAG, "instance");
-        this.mContext = context;
+    private Imgur(Context context) {
+        super();
+        mContext = context;
     }
+
+    public static Imgur getInstance(Context context, String imgurApiClientKey) {
+
+        IMGUR_API_CLIENT_KEY = imgurApiClientKey;
+        return new Imgur(context);
+    }
+
 
     public static ImgurUploadResponse resp() {
         Log.i(TAG, "resp");
         return new ImgurUploadResponse();
     }
 
+
     @Override
     public rx.Observable<ImgurUploadResponse> upload(Map<String, RequestBody> map) {
         Log.i(TAG, "upload");
         return ApiManager.getInstance(mContext).ImgurImageUpload(map);
     }
-
 
 }
